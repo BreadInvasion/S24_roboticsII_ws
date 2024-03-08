@@ -1,3 +1,6 @@
+# Group Members
+Mark Haddleton, Robert Dabney, Robert Smith, Emma Huntington
+
 # S24_roboticsII
 ROS2 Workspace for S24 RoboticsII
 
