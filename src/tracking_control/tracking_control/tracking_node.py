@@ -119,7 +119,8 @@ class TrackingNode(Node):
             robot_world_y = transform.transform.translation.y
             robot_world_z = transform.transform.translation.z
             robot_world_R = q2R([transform.transform.rotation.w, transform.transform.rotation.x, transform.transform.rotation.y, transform.transform.rotation.z])
-            object_pose = robot_world_R@self.cp_pose+np.array([robot_world_x,robot_world_y,robot_world_z])
+            # object_pose = robot_world_R@self.cp_pose+np.array([robot_world_x,robot_world_y,robot_world_z])
+            object_pose = robot_world_R@self.obj_pose+np.array([robot_world_x,robot_world_y,robot_world_z])
             
         except TransformException as e:
             self.get_logger().error('Transform error: ' + str(e))
@@ -135,6 +136,7 @@ class TrackingNode(Node):
         # and update the command velocity accordingly
         if self.obj_pose is None:
             cmd_vel = Twist()
+            cmd_vel.linear.y = 0.0
             cmd_vel.linear.x = 0.0
             cmd_vel.angular.z = 0.0
             self.pub_control_cmd.publish(cmd_vel)
@@ -144,23 +146,44 @@ class TrackingNode(Node):
         current_object_pose = self.get_current_object_pose()
         
         # TODO: get the control velocity command
-        cmd_vel = self.controller()
+        cmd_vel = self.controller(current_object_pose)
         
         # publish the control command
         self.pub_control_cmd.publish(cmd_vel)
         #################################################
     
-    def controller(self):
+    def controller(self, current_object_pose):
         # Instructions: You can implement your own control algorithm here
         # feel free to modify the code structure, add more parameters, more input variables for the function, etc.
         
         ########### Write your code here ###########
+        x = current_object_pose[0]
+        # self.get_logger().info("X:")
+        self.get_logger().info('x: "%d"' % x)
+        self.get_logger().info('y: "%d"' % y)
+        self.get_logger().info('z: "%d"' % z)
+        y = current_object_pose[1]
+        z = current_object_pose[2]
+        cmd_vel = Twist()
+        cmd_vel.linear.x = 0.0
+        cmd_vel.linear.y = 0.0
+        cmd_vel.angular.z = 0.0
         
         # TODO: Update the control velocity command
-        cmd_vel = Twist()
-        cmd_vel.linear.x = 0
-        cmd_vel.linear.y = 0
-        cmd_vel.angular.z = 0
+        if np.absolute(y) < .1:
+            cmd_vel.angular.z = 0.0
+        elif y>0:
+            cmd_vel.angular.z = .2
+        else:
+            cmd_vel.angular.z = -.2
+        
+        if np.absolute(x)-0.3 < .1:
+            cmd_vel.linear.x = 0.0
+        elif x>0.3:
+            cmd_vel.linear.x = 0.0
+        else:
+            cmd_vel.linear.x = 0.0
+
         return cmd_vel
     
         ############################################
