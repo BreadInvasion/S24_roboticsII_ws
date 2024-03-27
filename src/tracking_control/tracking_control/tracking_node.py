@@ -77,6 +77,11 @@ class TrackingNode(Node):
         
         # Create publisher for the control command
         self.pub_control_cmd = self.create_publisher(Twist, '/track_cmd_vel', 10)
+        
+        # Create a object pose (with pose estimation) publihser
+        self.obj_pose_with_est = self.create_publisher(PoseStamped, '/est_obj_pose', 10)
+        
+        
         # Create a subscriber to the detected object pose
         self.sub_detected_obj_pose = self.create_subscription(PoseStamped, '/detected_color_object_pose', self.detected_obj_pose_callback, 10)
     
@@ -138,7 +143,7 @@ class TrackingNode(Node):
             cmd_vel = Twist()
             cmd_vel.linear.y = 0.0
             cmd_vel.linear.x = 0.0
-            cmd_vel.angular.z = 0.5
+            cmd_vel.angular.z = 0.0
             self.pub_control_cmd.publish(cmd_vel)
             return
         
@@ -147,6 +152,10 @@ class TrackingNode(Node):
         
         # TODO: get the control velocity command
         cmd_vel = self.controller(current_object_pose)
+        obj_pose_pub = PoseStamped()
+        obj_pose_pub.pose.position.x = current_object_pose[0]
+        obj_pose_pub.pose.position.y = current_object_pose[1]
+        self.obj_pose_with_est.publish(obj_pose_pub)
         
         # publish the control command
         self.pub_control_cmd.publish(cmd_vel)
@@ -158,10 +167,8 @@ class TrackingNode(Node):
         
         ########### Write your code here ###########
         x = current_object_pose[0]
-        # self.get_logger().info("X:")
+        # self.get_logger().info(str(type(current_object_pose)))
         self.get_logger().info(str(current_object_pose))
-        # self.get_logger().info('y: "%d"' % y)
-        # self.get_logger().info('z: "%d"' % z)
         y = current_object_pose[1]
         z = current_object_pose[2]
         cmd_vel = Twist()
@@ -169,24 +176,10 @@ class TrackingNode(Node):
         cmd_vel.linear.y = 0.0
         cmd_vel.angular.z = 0.0
         
-        # TODO: Update the control velocity command
-        cmd_vel.angular.z = y*1.5
-        cmd_vel.linear.y = y*0.2
-        cmd_vel.linear.x = x-0.3
-        # if np.absolute(y) < .1:
-        #     cmd_vel.angular.z = 0.0
-        # elif y>0:
-        #     cmd_vel.angular.z = .2
-        # else:
-        #     cmd_vel.angular.z = -.2
-        
-        # if np.absolute(x-0.3) < .1:
-        #     cmd_vel.linear.x = 0.0
-        # elif x>0.3:
-        #     cmd_vel.linear.x = 0.2
-        # else:
-        #     cmd_vel.linear.x = -0.2
-
+        # Update the control velocity command
+        cmd_vel.angular.z = y#*1.5
+        # cmd_vel.linear.y = y*0.2
+        cmd_vel.linear.x = x-.3
         return cmd_vel
     
         ############################################

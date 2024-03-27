@@ -63,7 +63,7 @@ class ColorObjDetectionNode(Node):
         self.declare_parameter('color_low', [110, 50, 150])
         self.declare_parameter('color_high', [130, 255, 255])
         # self.declare_parameter('object_size_min', 1000)
-        self.declare_parameter('object_size_min', 50)
+        self.declare_parameter('object_size_min', 1000)
         # Used to convert between ROS and OpenCV images
         self.br = CvBridge()
         
