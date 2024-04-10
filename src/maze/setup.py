@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+        	'lidar2dist = maze.lidar2distance:main',
         ],
     },
 )
