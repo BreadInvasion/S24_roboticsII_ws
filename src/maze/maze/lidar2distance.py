@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-
+from maze_interfaces.msg import CardinalDist
 
 import sensor_msgs.msg
 
@@ -16,18 +16,23 @@ class ReadingLaser(Node):
             self.listener_callback,
             10
         )
+        self.publisher = self.create_publisher(CardinalDist,'cardinal',10)
 
 
     def listener_callback(self, msg):
         num_angles = len(msg.ranges) # 1080
         # TODO: Figure out which directions are which
-        dir1 = msg.ranges[0]
-        dir2 = msg.ranges[270]
-        dir3 = msg.ranges[540]
-        dir4 = msg.ranges[810]
-        dir5 = msg.ranges[1079]
-        self.get_logger().info(str((dir1,dir2,dir3,dir4,dir5)))
-
+        front = msg.ranges[0]
+        left = msg.ranges[270]
+        back = msg.ranges[540]
+        right = msg.ranges[810]
+        out = CardinalDist()
+        out.front = front
+        out.right = right
+        out.back = back
+        out.left = left
+        self.publisher.publish(out)
+        
 def main(args=None):
     rclpy.init()
     reading_laser = ReadingLaser()               
