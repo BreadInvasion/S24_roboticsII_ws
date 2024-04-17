@@ -21,22 +21,25 @@ class ReadingLaser(Node):
 
     def listener_callback(self, msg):
         num_angles = len(msg.ranges) # 1080
-        # TODO: Figure out which directions are which
         front = msg.ranges[0]
         left = msg.ranges[270]
         back = msg.ranges[540]
         right = msg.ranges[810]
+        front_right = msg.ranges[810+100]
+        back_right = msg.ranges[810-100]
         out = CardinalDist()
         out.front = front
         out.right = right
         out.back = back
         out.left = left
+        out.front_right = front_right
+        out.back_right = back_right
         self.publisher.publish(out)
         
 def main(args=None):
     rclpy.init()
     reading_laser = ReadingLaser()               
-    reading_laser.get_logger().info("Hello friend!")
+    reading_laser.get_logger().info("Lidar Started")
     rclpy.spin(reading_laser)
 
     # Destroy the node explicitly
