@@ -1,6 +1,10 @@
+float32 front_plus
 float32 front
-float32 front_right
+float32 front_minus
+float32 right_plus
 float32 right
-float32 back_right
+float32 right_minus
 float32 back
+float32 left_plus
 float32 left
+float32 left_minus

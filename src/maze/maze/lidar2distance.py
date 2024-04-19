@@ -21,19 +21,28 @@ class ReadingLaser(Node):
 
     def listener_callback(self, msg):
         num_angles = len(msg.ranges) # 1080
+        offset = 100
         front = msg.ranges[0]
+        front_plus = msg.ranges[offset]
+        front_minus = msg.ranges[1080-offset]
         left = msg.ranges[270]
+        left_plus = msg.ranges[270+offset]
+        left_minus = msg.ranges[270-offset]
         back = msg.ranges[540]
         right = msg.ranges[810]
-        front_right = msg.ranges[810+100]
-        back_right = msg.ranges[810-100]
+        right_plus = msg.ranges[810+offset]
+        right_minus = msg.ranges[810-offset]
         out = CardinalDist()
         out.front = front
         out.right = right
         out.back = back
         out.left = left
-        out.front_right = front_right
-        out.back_right = back_right
+        out.right_plus = right_plus
+        out.right_minus = right_minus
+        out.front_plus = front_plus
+        out.front_minus = front_minus
+        out.left_plus = left_plus
+        out.left_minus = left_minus
         self.publisher.publish(out)
         
 def main(args=None):
