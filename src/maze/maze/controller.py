@@ -95,14 +95,14 @@ class Controller(Node):
             self.control_callback,
             10
         )
-        self.timer = self.create_timer(.05, self.timer_callback)
+        self.timer = self.create_timer(.1, self.timer_callback)
         self.state = SCAN
         self.start = 0
         self.goal = 0
         self.maze_control = True
         self.cmd_pub = self.create_publisher(Twist,'cmd_vel',10)
-        self.current_angle = 0
-        self.current_cardinal = CardinalDist()
+        self.current_angle = -999
+        self.current_cardinal = -999
     def angle_callback(self,msg):
         quat = msg.pose.pose.orientation
         orientation_list = [quat.x, quat.y, quat.z, quat.w]
@@ -116,6 +116,8 @@ class Controller(Node):
         self.maze_control = msg.data
         
     def timer_callback(self):
+        if self.current_angle == -999 or self.current_cardinal==-999:
+            return
         if self.maze_control:
             cmd_vel = Twist()
             cmd_vel.linear.x = 0.0
