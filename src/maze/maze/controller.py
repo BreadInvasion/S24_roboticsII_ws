@@ -157,6 +157,7 @@ class Controller(Node):
                     self.state = SCAN #FIXME change to Center & Align
                     self.cmd_pub.publish(cmd_vel)
             elif self.state == ROTATE:
+                cmd_vel.angular.z = (self.goal-self.current_angle)/50
                 diff = angle_dist(self.current_angle,self.goal)
                 if diff<5.0: # FIXME tune degree requirement
                     self.get_logger().info("rotate done")
@@ -164,8 +165,9 @@ class Controller(Node):
                     self.get_logger().info(str(self.current_angle))
                     self.get_logger().info(str(self.goal))
                     self.state = ALIGN
-                    self.cmd_pub.publish(cmd_vel)
+                self.cmd_pub.publish(cmd_vel)
             elif self.state ==ROTATE_THEN_FORWARD:
+                cmd_vel.angular.z = (self.goal-self.current_angle)/50
                 diff = angle_dist(self.current_angle,self.goal)
                 if diff<5.0:
                     self.get_logger().info("rotate done")
@@ -173,7 +175,7 @@ class Controller(Node):
                     self.get_logger().info(str(self.current_angle))
                     self.get_logger().info(str(self.goal))
                     self.state = FORWARD
-                    self.cmd_pub.publish(cmd_vel)
+                self.cmd_pub.publish(cmd_vel)
             elif self.state ==  ALIGN:
                 aligned_tolerance = 1.0 # degrees
                 if self.current_cardinal.right<CELL_SIZE:
