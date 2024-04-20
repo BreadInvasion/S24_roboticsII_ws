@@ -175,7 +175,7 @@ class Controller(Node):
                     self.get_logger().info(str(self.current_angle))
                     self.get_logger().info(str(self.goal))
                     self.state = FORWARD
-                    cmd_vel = linear_speed
+                    cmd_vel.linear.x = linear_speed
                     self.cmd_pub.publish(cmd_vel)
             elif self.state ==  ALIGN:
                 aligned_tolerance = 1.0 # degrees
