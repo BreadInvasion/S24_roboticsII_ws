@@ -186,7 +186,7 @@ class TrackingNode(Node):
         # Update the control velocity command
         cmd_vel.angular.z = y#*1.5
         # cmd_vel.linear.y = y*0.2
-        cmd_vel.linear.x = x-.3
+        cmd_vel.linear.x = (x-.3)*.25
         return cmd_vel
     
         ############################################

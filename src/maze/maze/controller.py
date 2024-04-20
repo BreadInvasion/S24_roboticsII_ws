@@ -159,15 +159,19 @@ class Controller(Node):
             elif self.state == ROTATE:
                 diff = angle_dist(self.current_angle,self.goal)
                 if diff<5.0: # FIXME tune degree requirement
-                    # self.get_logger().info("rotate done")
-                    # self.get_logger().info(str(diff))
-                    # self.get_logger().info(str(self.current_angle))
-                    # self.get_logger().info(str(self.goal))
+                    self.get_logger().info("rotate done")
+                    self.get_logger().info(str(diff))
+                    self.get_logger().info(str(self.current_angle))
+                    self.get_logger().info(str(self.goal))
                     self.state = ALIGN
                     self.cmd_pub.publish(cmd_vel)
             elif self.state ==ROTATE_THEN_FORWARD:
                 diff = angle_dist(self.current_angle,self.goal)
                 if diff<5.0:
+                    self.get_logger().info("rotate done")
+                    self.get_logger().info(str(diff))
+                    self.get_logger().info(str(self.current_angle))
+                    self.get_logger().info(str(self.goal))
                     self.state = FORWARD
                     self.cmd_pub.publish(cmd_vel)
             elif self.state ==  ALIGN:
