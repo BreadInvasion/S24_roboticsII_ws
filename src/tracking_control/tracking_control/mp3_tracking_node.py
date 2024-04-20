@@ -1,7 +1,6 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist, PoseStamped
-from std_msgs import Bool
 from tf2_ros import TransformException, Buffer, TransformListener
 import numpy as np
 import math
@@ -77,7 +76,7 @@ class TrackingNode(Node):
         self.tf_listener = TransformListener(self.tf_buffer, self)
         
         # Create publisher for the control command
-        self.pub_control_cmd = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.pub_control_cmd = self.create_publisher(Twist, '/track_cmd_vel', 10)
         
         # Create a object pose (with pose estimation) publihser
         self.obj_pose_with_est = self.create_publisher(PoseStamped, '/est_obj_pose', 10)
@@ -88,9 +87,6 @@ class TrackingNode(Node):
     
         # Create timer, running at 100Hz
         self.timer = self.create_timer(0.01, self.timer_update)
-        
-        # create publisher for final project controller compatibility
-        self.cont_pub = self.create_publisher(Bool,'/control',10)
     
     def detected_obj_pose_callback(self, msg):
         #self.get_logger().info('Received Detected Object Pose')
@@ -144,15 +140,12 @@ class TrackingNode(Node):
         # But, you may want to think about what to do in this case
         # and update the command velocity accordingly
         if self.obj_pose is None:
-            # cmd_vel = Twist()
-            # cmd_vel.linear.y = 0.0
-            # cmd_vel.linear.x = 0.0
-            # cmd_vel.angular.z = 0.0
-            # self.pub_control_cmd.publish(cmd_vel)
+            cmd_vel = Twist()
+            cmd_vel.linear.y = 0.0
+            cmd_vel.linear.x = 0.0
+            cmd_vel.angular.z = 0.0
+            self.pub_control_cmd.publish(cmd_vel)
             return
-        cont = Bool()
-        cont.data = False
-        self.cont_pub.publish(cont)
         
         # Get the current object pose in the robot base_footprint frame
         current_object_pose = self.get_current_object_pose()
