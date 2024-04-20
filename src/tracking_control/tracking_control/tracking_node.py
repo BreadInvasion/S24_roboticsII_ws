@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist, PoseStamped
-from std_msgs import Bool
+from std_msgs.msg import Bool
 from tf2_ros import TransformException, Buffer, TransformListener
 import numpy as np
 import math

@@ -2,7 +2,7 @@ import rclpy
 from rclpy.node import Node
 from maze_interfaces.msg import CardinalDist
 from geometry_msgs.msg import Twist
-from std_msgs import Bool
+from std_msgs.msg import Bool
 from nav_msgs.msg import Odometry
 import numpy as np
 CELL_SIZE = 0.508
@@ -99,8 +99,7 @@ class Controller(Node):
         self.state = SCAN
         self.start = 0
         self.goal = 0
-        self.maze_control = Bool()
-        self.maze_control.data = True
+        self.maze_control = True
         self.cmd_pub = self.create_publisher(Twist,'cmd_vel',10)
         self.current_angle = 0
         self.current_cardinal = CardinalDist()
