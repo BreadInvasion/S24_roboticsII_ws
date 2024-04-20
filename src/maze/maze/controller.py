@@ -11,6 +11,7 @@ FORWARD = 1
 ROTATE = 2
 CENTER = 3
 ALIGN = 4
+ROTATE_THEN_FORWARD = 5
 
 ## Functions for quaternion and rotation matrix conversion
 ## The code is adapted from the general_robotics_toolbox package
@@ -128,7 +129,7 @@ class Controller(Node):
             self.get_logger().info(str(self.state))
             if self.state == SCAN:
                 if self.current_cardinal.right>CELL_SIZE:
-                    self.state = ROTATE
+                    self.state = ROTATE_THEN_FORWARD
                     self.start = self.current_angle
                     self.goal = trim_angle(self.start-90.0) # want to turn to -90 degrees
                     cmd_vel.angular.z = -spin_speed
@@ -157,12 +158,17 @@ class Controller(Node):
                     self.cmd_pub.publish(cmd_vel)
             elif self.state == ROTATE:
                 diff = angle_dist(self.current_angle,self.goal)
-                if diff<10.0: # FIXME tune degree requirement
+                if diff<5.0: # FIXME tune degree requirement
                     # self.get_logger().info("rotate done")
                     # self.get_logger().info(str(diff))
                     # self.get_logger().info(str(self.current_angle))
                     # self.get_logger().info(str(self.goal))
                     self.state = ALIGN
+                    self.cmd_pub.publish(cmd_vel)
+            elif self.state ==ROTATE_THEN_FORWARD:
+                diff = angle_dist(self.current_angle,self.goal)
+                if diff<5.0:
+                    self.state = FORWARD
                     self.cmd_pub.publish(cmd_vel)
             elif self.state ==  ALIGN:
                 aligned_tolerance = 1.0 # degrees
