@@ -159,6 +159,9 @@ class Controller(Node):
             elif self.state == ROTATE:
                 # cmd_vel.angular.z = (self.goal-self.current_angle)/50
                 diff = angle_dist(self.current_angle,self.goal)
+                self.get_logger().info(str(diff))
+                self.get_logger().info(str(self.current_angle))
+                self.get_logger().info(str(self.goal))
                 if diff<10.0: # FIXME tune degree requirement
                     self.get_logger().info("rotate done")
                     self.get_logger().info(str(diff))
@@ -169,6 +172,9 @@ class Controller(Node):
             elif self.state ==ROTATE_THEN_FORWARD:
                 # cmd_vel.angular.z = (self.goal-self.current_angle)/50
                 diff = angle_dist(self.current_angle,self.goal)
+                self.get_logger().info(str(diff))
+                self.get_logger().info(str(self.current_angle))
+                self.get_logger().info(str(self.goal))
                 if diff<10.0:
                     self.get_logger().info("rotate done")
                     self.get_logger().info(str(diff))
