@@ -1,0 +1,21 @@
+colcon build
+source install/setup.bash
+
+Controllers:
+ros2 launch maze maze.launch.py
+ros2 launch tracking_control tracking_color_object_launch.py
+
+Driver:
+ros2 run yahboomcar_bringup Mcnamu_driver_X3
+
+Lidar:
+ros2 launch sllidar_ros2 sllidar_launch.py
+OR
+ros2 launch sllidar_ros2 sllidar_s2_launch.py
+
+Camera & Driver: 
+ros2 launch tracking_control car_camera_pro_bringup_launch.py
+OR
+ros2 launch tracking_control car_camera_proplus_bringup_launch.py
+
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
