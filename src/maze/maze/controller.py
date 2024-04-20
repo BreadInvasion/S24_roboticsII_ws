@@ -95,7 +95,7 @@ class Controller(Node):
             self.control_callback,
             10
         )
-        self.timer = self.create_timer(.1, self.timer_callback)
+        self.timer = self.create_timer(.01, self.timer_callback)
         self.state = SCAN
         self.start = 0
         self.goal = 0
