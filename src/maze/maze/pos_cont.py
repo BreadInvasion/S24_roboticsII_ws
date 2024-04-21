@@ -34,7 +34,7 @@ class Controller(Node):
                 cmd_vel.angular.z = -1.0
             if z>0.0:
                 cmd_vel.angular.z = 1.0
-            self.stop = 220
+            self.stop = 217
             self.tim = 0
             self.cmd_pub.publish(cmd_vel)
         elif x!=0:
