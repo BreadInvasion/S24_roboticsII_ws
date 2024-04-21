@@ -55,7 +55,7 @@ class Controller(Node):
                 cmd_vel.linear.x = .2
             if x <0.0:
                 cmd_vel.linear.x = -.2
-            self.stop = 100
+            self.stop = 290
             self.tim = 0
             self.cmd_pub.publish(cmd_vel)
     def timer_callback(self):
