@@ -54,7 +54,7 @@ class Controller(Node):
                     self.des_pose_pub.publish(des_pose)
                 elif self.current_cardinal.front>CELL_SIZE:
                     # self.state = FORWARD
-                    des_pose.linear.x = 1
+                    des_pose.linear.x = 1.0
                     self.des_pose_pub.publish(des_pose)
                 # elif self.current_cardinal.left>CELL_SIZE:
                 #     self.state = ROTATE
@@ -64,10 +64,10 @@ class Controller(Node):
                 #     self.cmd_pub.publish(cmd_vel)
                 else:
                     # self.state = ROTATE
-                    des_pose.angular.z = -1.0
+                    des_pose.angular.z = 1.0
                     self.des_pose_pub.publish(des_pose)
             elif self.state == ROTATE_THEN_FORWARD:
-                des_pose.linear.x = 1
+                des_pose.linear.x = 1.0
                 self.des_pose_pub.publish(des_pose)
                 self.state=SCAN
             # elif self.state == FORWARD:

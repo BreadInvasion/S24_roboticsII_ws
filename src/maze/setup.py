@@ -26,7 +26,7 @@ setup(
         'console_scripts': [
             'lidar = maze.lidar2distance:main',
             'cont = maze.controller:main',
-            'pos_cont = maze.pos_cont:main',
+            'position_cont = maze.pos_cont:main',
         ],
     },
 )
