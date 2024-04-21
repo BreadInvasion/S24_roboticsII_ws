@@ -16,24 +16,11 @@ class Controller(Node):
             self.pose_callback,
             10
         )
-        self.angle_sub = self.create_subscription(
-            Odometry,
-            '/odom_raw',
-            self.angle_callback,
-            10
-        )
         self.timer = self.create_timer(.01, self.timer_callback)
         self.tim = 0
         self.stop = 0
         self.maze_control = True
         self.cmd_pub = self.create_publisher(Twist,'cmd_vel',10)
-    def angle_callback(self,msg):
-        quat = msg.pose.pose.orientation
-        orientation_list = [quat.x, quat.y, quat.z, quat.w]
-        angle = R2rpy(q2R(orientation_list))
-        yaw = angle[0]*180/3.1415 # FIXME (lazy pi)
-        # self.get_logger().info(str(yaw))
-        self.current_angle = yaw
     def pose_callback(self, msg):
         x = msg.linear.x
         y = msg.linear.y
