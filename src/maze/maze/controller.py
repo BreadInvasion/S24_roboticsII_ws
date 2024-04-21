@@ -86,7 +86,7 @@ class Controller(Node):
         )
         self.angle_sub = self.create_subscription(
             Odometry,
-            '/odom',
+            '/odom_raw',
             self.angle_callback,
             10
         )

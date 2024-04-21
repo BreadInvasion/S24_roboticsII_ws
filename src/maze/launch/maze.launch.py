@@ -18,5 +18,8 @@ def generate_launch_description():
     controller = Node(
             package = 'maze',
             executable = 'cont')
+    pos_controller = Node(
+            package = 'maze'
+            executable = 'pos_cont')
 
     return LaunchDescription([lidar,controller])
